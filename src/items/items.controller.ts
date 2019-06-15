@@ -1,15 +1,17 @@
-import { Controller, Get, Post } from '@nestjs/common';
-import { async } from 'rxjs/internal/scheduler/async';
+import { Controller, Get, Post, HttpCode, Param } from '@nestjs/common';
+import { ItemsService } from './items.service';
 
 @Controller('items')
-export class ItemsController{
-    @Get()
-    async findAll(): Promise<string[]>{
-        return ['Pizza', 'Coke'];
+export class ItemsController {
+    constructor(private readonly itemsService: ItemsService) {}
+
+    @Get('demo')
+    findAll(): string {
+        return this.itemsService.getHello();
     }
 
-    @Post()
-    async create(){
-        return 'Not yet implement';
+    @Get(':id')
+    findOne(@Param('id') id : number):string{
+        return this.itemsService.getOne(id);
     }
 }
